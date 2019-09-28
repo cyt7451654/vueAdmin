@@ -56,39 +56,7 @@ export const constantRoutes = [{
       }
     }]
   },
-  {
-    path: '/teacher',
-    component: Layout,
-    meta: {
-      title: '教师管理',
-      icon: 'dashboard'
-    }
-    children: [{
-      path: 'teacherList',
-      name: 'teacherList',
-      component: () => import('@/views/dashboard/index'),
-      meta: {
-        title: '教师列表',
-        icon: 'dashboard'
-      }
-    }, {
-      path: 'teacherAudit',
-      name: 'teacherAudit',
-      component: () => import('@/views/dashboard/index'),
-      meta: {
-        title: '教师审核',
-        icon: 'dashboard'
-      }
-    }, {
-      path: 'teacherQuestion',
-      name: 'teacherQuestion',
-      component: () => import('@/views/dashboard/index'),
-      meta: {
-        title: '任教问题设置',
-        icon: 'dashboard'
-      }
-    }]
-  },
+  
   // 404 page must be placed at the end !!!
   {
     path: '*',
