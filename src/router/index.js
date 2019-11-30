@@ -30,39 +30,70 @@ import Layout from '@/layout'
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
-export const constantRoutes = [{
+export const constantRoutes = [
+  {
     path: '/login',
     component: () => import('@/views/login/index'),
     hidden: true
   },
-
+  {
+    path: '/',
+    component: Layout
+  },
   {
     path: '/404',
     component: () => import('@/views/404'),
     hidden: true
-  },
-
+  }
+]
+export const asyncRoutes = [
   {
-    path: '/',
+    path: '/table',
     component: Layout,
-    redirect: '/dashboard',
+    redirect: '/table/tableList',
     children: [{
-      path: 'dashboard',
-      name: 'Dashboard',
-      component: () => import('@/views/dashboard/index'),
+      path: 'tableList',
+      name: 'tableList',
+      component: () => import('@/views/table/index'),
       meta: {
-        title: '首页推荐',
-        icon: 'dashboard'
+        title: '表格',
+        icon: 'dashboard',
+        roles: ['admin']
       }
     }]
   },
-  
-  // 404 page must be placed at the end !!!
   {
-    path: '*',
-    redirect: '/404',
-    hidden: true
-  }
+    path: '/form',
+    component: Layout,
+    redirect: '/formInfo',
+    children: [{
+      path: 'formInfo',
+      name: 'formInfo',
+      component: () => import('@/views/form/index'),
+      meta: {
+        title: '表单',
+        icon: 'dashboard',
+        roles: ['admin']
+      }
+    }]
+  },
+  {
+    path: '/tinymce',
+    component: Layout,
+    redirect: '/tinymceInfo',
+    children: [{
+      path: 'tinymceInfo',
+      name: 'tinymceInfo',
+      component: () => import('@/views/tinymce/index'),
+      meta: {
+        title: '富文本编辑器',
+        icon: 'dashboard',
+        roles: ['admin']
+      }
+    }]
+  },
+  // 404 page must be placed at the end !!!
+  { path: '*', redirect: '/404', hidden: true }
 ]
 
 const createRouter = () => new Router({

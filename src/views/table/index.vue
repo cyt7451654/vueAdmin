@@ -1,79 +1,73 @@
 <template>
   <div class="app-container">
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      element-loading-text="Loading"
-      border
-      fit
-      highlight-current-row
+    <my-table
+      :columns="tableColumns"
+      :data-source="tableData"
+      :text-align="`center`"
+      :header-align="'center'"
+      :show-pagination="true"
+      :page="page"
+      :size="size"
+      :total="total"
+      @pageChange="pageChange"
     >
-      <el-table-column align="center" label="ID" width="95">
-        <template slot-scope="scope">
-          {{ scope.$index }}
-        </template>
-      </el-table-column>
-      <el-table-column label="Title">
-        <template slot-scope="scope">
-          {{ scope.row.title }}
-        </template>
-      </el-table-column>
-      <el-table-column label="Author" width="110" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.author }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="Pageviews" width="110" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.pageviews }}
-        </template>
-      </el-table-column>
-      <el-table-column class-name="status-col" label="Status" width="110" align="center">
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" prop="created_at" label="Display_time" width="200">
-        <template slot-scope="scope">
-          <i class="el-icon-time" />
-          <span>{{ scope.row.display_time }}</span>
-        </template>
-      </el-table-column>
-    </el-table>
+      <div slot="slotItem">
+        <el-table-column fixed="right" label="操作" align="center">
+          <template slot-scope="scope">
+            <el-button type="text" size="small" @click="edit(scope.row.id)">编辑</el-button>
+            <el-button v-if="identity=='admin'" type="text" size="small" @click="del(scope.row.id)">删除</el-button>
+          </template>
+        </el-table-column>
+      </div>
+    </my-table>
   </div>
 </template>
 
 <script>
-import { getList } from '@/api/table'
-
+import myTable from '../../components/table/table.vue'
 export default {
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        published: 'success',
-        draft: 'gray',
-        deleted: 'danger'
-      }
-      return statusMap[status]
-    }
+  name: 'Dashboard',
+  components: {
+    myTable
   },
   data() {
     return {
-      list: null,
-      listLoading: true
+      page: 1,
+      total: 0,
+      size: 10,
+      tableColumns: [
+        {
+          hasSort: false, // <Boolean> 是否排序
+          isShow: true, // <Boolean> 是否展示
+          prop: 'province', // <String>  对应属性名
+          label: '省', // <String>   表头标签
+          textalgin: 'center' // <String>   表格内容对齐方式
+        },
+        {
+          hasSort: false, // <Boolean> 是否排序
+          isShow: true, // <Boolean> 是否展示
+          prop: 'city', // <String>  对应属性名
+          label: '市', // <String>   表头标签
+          textalgin: 'center' // <String>   表格内容对齐方式
+        },
+        {
+          hasSort: false, // <Boolean> 是否排序
+          isShow: true, // <Boolean> 是否展示
+          prop: 'district', // <String>  对应属性名
+          label: '区', // <String>   表头标签
+          textalgin: 'center' // <String>   表格内容对齐方式
+        }
+      ],
+      tableData: []
     }
   },
-  created() {
-    this.fetchData()
-  },
   methods: {
-    fetchData() {
-      this.listLoading = true
-      getList().then(response => {
-        this.list = response.data.items
-        this.listLoading = false
-      })
+    pageChange(val) {
+      console.log(val)
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+</style>

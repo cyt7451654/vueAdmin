@@ -9,3 +9,8 @@ export default {
   name: 'App'
 }
 </script>
+<style lang="scss">
+.formInput{
+  width: 200px;
+}
+</style>
