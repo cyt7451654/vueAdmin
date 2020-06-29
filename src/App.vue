@@ -10,7 +10,11 @@ export default {
 }
 </script>
 <style lang="scss">
-.formInput{
+.formInput {
   width: 200px;
+}
+.tableImg {
+  max-width: 100%;
+  height: 150px;
 }
 </style>

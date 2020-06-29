@@ -7,9 +7,19 @@
       @selection-change="handleSelectionChange"
     >
       <!--选择-->
-      <el-table-column v-if="hasSelection" type="selection" width="55" :align="textAlign" />
+      <el-table-column
+        v-if="hasSelection"
+        type="selection"
+        width="55"
+        :align="textAlign"
+      />
       <!--序号-->
-      <el-table-column v-if="hasIndex" type="index" width="55" :align="textAlign" />
+      <el-table-column
+        v-if="hasIndex"
+        type="index"
+        width="55"
+        :align="textAlign"
+      />
       <!--数据源-->
       <el-table-column
         v-for="column in columns"
@@ -21,7 +31,29 @@
         :label="column.label"
         :align="textAlign"
         :width="column.width"
-      />
+        :fixed="column.fixed"
+      >
+        <template slot-scope="scope">
+          <template v-if="column.type=='btn'">
+            <el-button
+              v-for="(btn,index) in column.operates"
+              :key="index"
+              :type="btn.type"
+              :size="btn.small"
+              @click.native.prevent="btn.method(scope.row, scope.$index)"
+            >{{ btn.label }}</el-button>
+          </template>
+          <template v-if="column.type=='text'">
+            {{ scope.row[column.prop] }}
+          </template>
+          <template v-if="column.type=='img'">
+            <img
+              :src="scope.row[column.prop]"
+              class="tableImg"
+            >
+          </template>
+        </template>
+      </el-table-column>
       <!--操作-->
       <slot name="slotItem" />
     </el-table>
@@ -56,28 +88,28 @@ export default {
     // 是否可以选择
     hasSelection: {
       type: Boolean,
-      default: function() {
+      default: function () {
         return false
       }
     },
     // 是否有序列项
     hasIndex: {
       type: Boolean,
-      default: function() {
+      default: function () {
         return false
       }
     },
     // 这是相应的字段展示
     columns: {
       type: Array,
-      default: function() {
+      default: function () {
         return []
       }
     },
     // 这是数据源
     dataSource: {
       type: Array,
-      default: function() {
+      default: function () {
         return []
       }
     },
@@ -103,7 +135,7 @@ export default {
     // 将选中的行发送到父组件
     handleSelectionChange(val) {
       const selectionArr = []
-      val.forEach(function(el) {
+      val.forEach(function (el) {
         selectionArr.push(el)
       })
       this.$emit('commitSelection', selectionArr)
@@ -116,7 +148,7 @@ export default {
 </script>
 
 <style scoped>
-.pagination{
+.pagination {
   margin-top: 30px;
   text-align: right;
 }

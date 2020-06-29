@@ -1,17 +1,44 @@
 <template>
   <div class="app-container">
-    <el-form ref="form" :model="form" label-width="100px">
-      <el-form-item label="名字：">
-        <el-input v-model="form.name" class="formInput" />
+    <el-form
+      ref="valueFrom"
+      :model="form"
+      label-width="100px"
+      :rules="rules"
+    >
+      <el-form-item
+        label="名字："
+        prop="name"
+      >
+        <el-input
+          v-model="form.name"
+          class="formInput"
+          placeholder="请输入名字"
+        />
       </el-form-item>
-      <el-form-item label="性别">
-        <el-select v-model="form.region" placeholder="请选择你的性别">
-          <el-option v-for="item in selectOption" :key="item.value" :label="item.label" :value="item.value" />
+      <el-form-item
+        label="性别"
+        prop="sex"
+      >
+        <el-select
+          v-model="form.sex"
+          placeholder="请选择你的性别"
+        >
+          <el-option
+            v-for="item in selectOption"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
         </el-select>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">确定</el-button>
+        <el-button
+          type="primary"
+          @click="onSubmit('valueFrom')"
+        >确定</el-button>
         <el-button @click="onCancel">返回</el-button>
+        <el-button @click="resetForm('valueFrom')">重置</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -23,13 +50,11 @@ export default {
     return {
       form: {
         name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
+        sex: ''
+      },
+      rules: {
+        name: [{ required: true, message: '请输入活动名称', trigger: 'blur' }],
+        sex: [{ required: true, message: '请选择性别', trigger: 'blur' }]
       },
       selectOption: [
         {
@@ -44,21 +69,31 @@ export default {
     }
   },
   methods: {
-    onSubmit() {
-      this.$message('submit!')
+    onSubmit(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          console.log(valid)
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
     },
     onCancel() {
       this.$message({
         message: 'cancel!',
         type: 'warning'
       })
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields()
     }
   }
 }
 </script>
 
 <style scoped>
-.line{
+.line {
   text-align: center;
 }
 </style>
